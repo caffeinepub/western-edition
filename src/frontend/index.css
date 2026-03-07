@@ -72,6 +72,12 @@
     box-sizing: border-box;
   }
 
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -165,6 +171,16 @@
   /* Warm ivory surface for product images */
   .bg-ivory-warm {
     background-color: oklch(0.975 0.006 75);
+  }
+
+  /* Scrollbar hide — for horizontal scroll sections on mobile */
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
   /* Hero CTA arrow link — accessible focus */

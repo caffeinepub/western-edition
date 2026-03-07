@@ -216,7 +216,10 @@ export function HomePage() {
           </h2>
         </div>
 
-        <div className="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6 md:-mx-12 md:px-12 snap-x snap-mandatory">
+        <div
+          className="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6 md:-mx-12 md:px-12 snap-x snap-mandatory scrollbar-hide"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           {rooms.map((room) => (
             <button
               type="button"
@@ -277,7 +280,10 @@ export function HomePage() {
         </div>
 
         {isLoading ? (
-          <div className="flex gap-6 overflow-x-auto pb-4">
+          <div
+            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="flex-shrink-0 w-72">
                 <Skeleton className="aspect-square w-72 bg-stone" />
@@ -288,7 +294,10 @@ export function HomePage() {
             ))}
           </div>
         ) : (
-          <div className="flex gap-8 overflow-x-auto pb-4">
+          <div
+            className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
             {displayProducts.map((product, i) => (
               <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
                 <ProductCard product={product} index={i} ocid={ocids[i]} />
@@ -307,7 +316,10 @@ export function HomePage() {
         </div>
 
         {mostLovedLoading ? (
-          <div className="flex gap-6 overflow-x-auto pb-4">
+          <div
+            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="flex-shrink-0 w-72">
                 <Skeleton className="aspect-square w-72 bg-stone" />
@@ -318,7 +330,10 @@ export function HomePage() {
             ))}
           </div>
         ) : (
-          <div className="flex gap-8 overflow-x-auto pb-4">
+          <div
+            className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
             {displayMostLoved.map((product, i) => (
               <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
                 <ProductCard
@@ -332,13 +347,14 @@ export function HomePage() {
         )}
       </section>
 
-      {/* ── The Western Edition Transformation ───────────────── */}
+      {/* ── Western Edition Transformation ───────────────────── */}
       <section className="py-16 md:py-28 px-4 md:px-12 max-w-[1400px] mx-auto">
         <div className="section-divider mb-10 md:mb-14">
-          <h2 className="font-serif text-3xl md:text-4xl text-foreground px-6">
-            The Western Edition
-            <br />
-            <span className="pl-6 md:pl-10">Transformation</span>
+          <h2
+            className="font-serif text-foreground px-4 md:px-6 whitespace-nowrap"
+            style={{ fontSize: "clamp(1.1rem, 4.5vw, 2.25rem)" }}
+          >
+            Western Edition Transformation
           </h2>
         </div>
         <BeforeAfterSlider

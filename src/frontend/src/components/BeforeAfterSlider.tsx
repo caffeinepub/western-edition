@@ -118,9 +118,9 @@ export function BeforeAfterSlider({
       data-ocid="transformation.canvas_target"
       className="relative w-full overflow-hidden select-none"
       style={{
-        aspectRatio: "16/9",
-        minHeight: "280px",
-        maxHeight: "75vh",
+        aspectRatio: "4/3",
+        minHeight: "260px",
+        maxHeight: "80vh",
         cursor: "col-resize",
         touchAction: "none",
         borderRadius: "2px",
