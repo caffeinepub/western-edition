@@ -18,8 +18,22 @@ export function BeforeAfterSlider({
   const [activeLabel, setActiveLabel] = useState<"before" | "after" | null>(
     null,
   );
+  const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const labelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Track container width via ResizeObserver to avoid layout thrash during render
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) setContainerWidth(entry.contentRect.width);
+    });
+    ro.observe(el);
+    setContainerWidth(el.getBoundingClientRect().width);
+    return () => ro.disconnect();
+  }, []);
 
   const showLabel = useCallback((pos: number) => {
     if (labelTimerRef.current) clearTimeout(labelTimerRef.current);
@@ -134,8 +148,7 @@ export function BeforeAfterSlider({
           alt={beforeLabel}
           className="absolute inset-y-0 left-0 h-full"
           style={{
-            width:
-              containerRef.current?.getBoundingClientRect().width ?? "100vw",
+            width: containerWidth > 0 ? `${containerWidth}px` : "100%",
             objectFit: "cover",
             objectPosition: "center",
           }}
