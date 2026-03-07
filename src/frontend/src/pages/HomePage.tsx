@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import type { Product } from "../backend.d";
 import { Category, Material, Room, Upholstery } from "../backend.d";
+import { BeforeAfterSlider } from "../components/BeforeAfterSlider";
 import { ProductCard } from "../components/ProductCard";
 import { ShowroomModal } from "../components/ShowroomModal";
 import { useGetMostLoved, useGetNewArrivals } from "../hooks/useQueries";
@@ -207,36 +208,6 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ── New Arrivals ──────────────────────────────────────── */}
-      <section className="py-20 md:py-28 px-6 md:px-12 max-w-[1400px] mx-auto">
-        <div className="section-divider mb-14">
-          <h2 className="font-serif text-3xl md:text-4xl text-foreground whitespace-nowrap px-6">
-            New Arrivals
-          </h2>
-        </div>
-
-        {isLoading ? (
-          <div className="flex gap-6 overflow-x-auto pb-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex-shrink-0 w-72">
-                <Skeleton className="aspect-square w-72 bg-stone" />
-                <Skeleton className="h-3 w-16 mt-4 bg-stone" />
-                <Skeleton className="h-5 w-48 mt-2 bg-stone" />
-                <Skeleton className="h-4 w-24 mt-2 bg-stone" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex gap-8 overflow-x-auto pb-4">
-            {displayProducts.map((product, i) => (
-              <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
-                <ProductCard product={product} index={i} ocid={ocids[i]} />
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
       {/* ── Shop by Room ──────────────────────────────────────── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="section-divider mb-14">
@@ -254,7 +225,7 @@ export function HomePage() {
               onClick={() =>
                 navigate({ to: "/shop", search: { room: room.room } })
               }
-              className="group relative overflow-hidden flex-shrink-0 w-[72vw] sm:w-[44vw] md:w-0 md:flex-1 h-[480px] md:h-[540px] block snap-start"
+              className="group relative overflow-hidden flex-shrink-0 w-64 md:w-72 aspect-square block snap-start"
             >
               <img
                 src={room.img}
@@ -297,6 +268,36 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* ── New Arrivals ──────────────────────────────────────── */}
+      <section className="py-20 md:py-28 px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="section-divider mb-14">
+          <h2 className="font-serif text-3xl md:text-4xl text-foreground whitespace-nowrap px-6">
+            New Arrivals
+          </h2>
+        </div>
+
+        {isLoading ? (
+          <div className="flex gap-6 overflow-x-auto pb-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="flex-shrink-0 w-72">
+                <Skeleton className="aspect-square w-72 bg-stone" />
+                <Skeleton className="h-3 w-16 mt-4 bg-stone" />
+                <Skeleton className="h-5 w-48 mt-2 bg-stone" />
+                <Skeleton className="h-4 w-24 mt-2 bg-stone" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex gap-8 overflow-x-auto pb-4">
+            {displayProducts.map((product, i) => (
+              <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
+                <ProductCard product={product} index={i} ocid={ocids[i]} />
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
       {/* ── Most Loved ────────────────────────────────────────── */}
       <section className="py-20 md:py-28 px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="section-divider mb-14">
@@ -329,6 +330,21 @@ export function HomePage() {
             ))}
           </div>
         )}
+      </section>
+
+      {/* ── The Western Edition Transformation ───────────────── */}
+      <section className="py-20 md:py-28 px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="section-divider mb-14">
+          <h2 className="font-serif text-3xl md:text-4xl text-foreground whitespace-nowrap px-6">
+            The Western Edition Transformation
+          </h2>
+        </div>
+        <BeforeAfterSlider
+          beforeSrc="/assets/uploads/Picsart_26-03-08_03-23-38-894-1.jpg"
+          afterSrc="/assets/uploads/Picsart_26-03-08_03-23-56-221-2.jpg"
+          beforeLabel="Before"
+          afterLabel="After"
+        />
       </section>
 
       {/* ── Lead CTA Banner ───────────────────────────────────── */}
