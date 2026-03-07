@@ -335,8 +335,10 @@ export function HomePage() {
       {/* ── The Western Edition Transformation ───────────────── */}
       <section className="py-16 md:py-28 px-4 md:px-12 max-w-[1400px] mx-auto">
         <div className="section-divider mb-10 md:mb-14">
-          <h2 className="font-serif text-3xl md:text-4xl text-foreground whitespace-nowrap px-6">
-            The Western Edition Transformation
+          <h2 className="font-serif text-3xl md:text-4xl text-foreground px-6">
+            The Western Edition
+            <br />
+            <span className="pl-6 md:pl-10">Transformation</span>
           </h2>
         </div>
         <BeforeAfterSlider
