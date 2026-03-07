@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Playfair Display — referenced via inline style in index.html */
+
+@layer base {
+  :root {
+    /* Western Edition — Architectural Minimalism */
+    /* Pure white background, near-black text, warm gold accent */
+    --radius: 0rem;
+
+    /* Core palette */
+    --background: 1 0 0;
+    --foreground: 0.12 0 0;
+
+    --card: 1 0 0;
+    --card-foreground: 0.12 0 0;
+
+    --popover: 1 0 0;
+    --popover-foreground: 0.12 0 0;
+
+    /* Primary = rich near-black (ink) */
+    --primary: 0.13 0 0;
+    --primary-foreground: 0.99 0 0;
+
+    /* Secondary = warm light grey */
+    --secondary: 0.97 0.005 75;
+    --secondary-foreground: 0.13 0 0;
+
+    /* Muted = lightest grey tint */
+    --muted: 0.965 0.003 75;
+    --muted-foreground: 0.48 0 0;
+
+    /* Accent = warm gold-bronze */
+    --accent: 0.72 0.08 70;
+    --accent-foreground: 0.13 0 0;
+
+    /* Destructive */
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Borders — ultra thin hairlines */
+    --border: 0.91 0.003 75;
+    --input: 0.91 0.003 75;
+    --ring: 0.35 0 0;
+
+    /* Charts */
+    --chart-1: 0.646 0.222 41.116;
+    --chart-2: 0.6 0.118 184.704;
+    --chart-3: 0.398 0.07 227.392;
+    --chart-4: 0.828 0.189 84.429;
+    --chart-5: 0.769 0.188 70.08;
+
+    /* Sidebar */
+    --sidebar: 0.985 0 0;
+    --sidebar-foreground: 0.13 0 0;
+    --sidebar-primary: 0.13 0 0;
+    --sidebar-primary-foreground: 0.985 0 0;
+    --sidebar-accent: 0.97 0 0;
+    --sidebar-accent-foreground: 0.13 0 0;
+    --sidebar-border: 0.91 0.003 75;
+    --sidebar-ring: 0.35 0 0;
+
+    /* Brand tokens */
+    --footer-bg: 0.11 0 0;
+    --hairline: oklch(0.91 0.003 75);
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .font-serif-display {
+    font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+  }
+
+  .font-sans-body {
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  }
+
+  .hairline {
+    border-color: var(--hairline);
+  }
+
+  .hairline-top {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .hairline-bottom {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .text-eyebrow {
+    @apply text-xs tracking-[0.25em] uppercase font-sans-body;
+    color: oklch(var(--muted-foreground));
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  /* Gallery-style product card hover */
+  .product-card-img {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+  }
+
+  .product-card-img:hover img {
+    transform: scale(1.03);
+  }
+
+  /* Pill selector */
+  .material-pill {
+    @apply px-4 py-2 text-sm border transition-all duration-200 cursor-pointer;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    letter-spacing: 0.05em;
+    border-color: var(--hairline);
+  }
+
+  .material-pill:hover {
+    border-color: oklch(var(--foreground));
+  }
+
+  .material-pill.selected {
+    background: oklch(var(--primary));
+    color: oklch(var(--primary-foreground));
+    border-color: oklch(var(--primary));
+  }
+
+  /* Transition duration override for smoother hero transitions */
+  .duration-400 {
+    transition-duration: 400ms;
+  }
+
+  /* Warm ivory surface for product images */
+  .bg-ivory-warm {
+    background-color: oklch(0.975 0.006 75);
+  }
+
+  /* Hero CTA arrow link — accessible focus */
+  a[data-ocid="hero.primary_button"]:focus-visible,
+  a[data-ocid="about.shop_link"]:focus-visible {
+    outline: 2px solid oklch(var(--ring));
+    outline-offset: 4px;
+  }
+}
