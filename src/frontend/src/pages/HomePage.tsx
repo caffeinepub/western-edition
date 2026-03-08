@@ -1,6 +1,12 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import heroImg from "../../public/assets/generated/hero-living.dim_1600x900.jpg";
+import roomBedImg from "../../public/assets/generated/product-bed-1.dim_800x800.jpg";
+import roomDecorImg from "../../public/assets/generated/product-decor-1.dim_800x800.jpg";
+import roomDiningImg from "../../public/assets/generated/product-dining-1.dim_800x800.jpg";
+import roomSofaImg from "../../public/assets/generated/product-sofa-2.dim_800x800.jpg";
+import beforeImg from "../../public/assets/uploads/Picsart_26-03-08_03-23-38-894-1.jpg";
+import afterImg from "../../public/assets/uploads/Picsart_26-03-08_03-23-56-221-2.jpg";
 import type { Product } from "../backend.d";
 import { Category, Material, Room, Upholstery } from "../backend.d";
 import { BeforeAfterSlider } from "../components/BeforeAfterSlider";
@@ -57,8 +63,8 @@ const fallbackProducts: Product[] = [
 ];
 
 export function HomePage() {
-  const { data: newArrivals, isLoading } = useGetNewArrivals();
-  const { data: mostLoved, isLoading: mostLovedLoading } = useGetMostLoved(6);
+  const { data: newArrivals } = useGetNewArrivals();
+  const { data: mostLoved } = useGetMostLoved(6);
   const [showroomOpen, setShowroomOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -66,25 +72,25 @@ export function HomePage() {
     {
       label: "Living Room",
       ocid: "categories.living_link",
-      img: "/assets/generated/product-sofa-2.dim_800x800.jpg",
+      img: roomSofaImg,
       room: "living",
     },
     {
       label: "Bedroom",
       ocid: "categories.bedroom_link",
-      img: "/assets/generated/product-bed-1.dim_800x800.jpg",
+      img: roomBedImg,
       room: "bedroom",
     },
     {
       label: "Dining Room",
       ocid: "categories.dining_link",
-      img: "/assets/generated/product-dining-1.dim_800x800.jpg",
+      img: roomDiningImg,
       room: "dining",
     },
     {
       label: "Decor",
       ocid: "categories.decor_link",
-      img: "/assets/generated/product-decor-1.dim_800x800.jpg",
+      img: roomDecorImg,
       room: "decor",
     },
   ];
@@ -121,7 +127,7 @@ export function HomePage() {
         style={{ height: "100svh", minHeight: "620px" }}
       >
         <img
-          src="/assets/generated/hero-living.dim_1600x900.jpg"
+          src={heroImg}
           alt="Western Edition luxury living room"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
@@ -279,32 +285,16 @@ export function HomePage() {
           </h2>
         </div>
 
-        {isLoading ? (
-          <div
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex-shrink-0 w-72">
-                <Skeleton className="aspect-square w-72 bg-stone" />
-                <Skeleton className="h-3 w-16 mt-4 bg-stone" />
-                <Skeleton className="h-5 w-48 mt-2 bg-stone" />
-                <Skeleton className="h-4 w-24 mt-2 bg-stone" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            {displayProducts.map((product, i) => (
-              <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
-                <ProductCard product={product} index={i} ocid={ocids[i]} />
-              </div>
-            ))}
-          </div>
-        )}
+        <div
+          className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          {displayProducts.map((product, i) => (
+            <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
+              <ProductCard product={product} index={i} ocid={ocids[i]} />
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── Most Loved ────────────────────────────────────────── */}
@@ -315,36 +305,20 @@ export function HomePage() {
           </h2>
         </div>
 
-        {mostLovedLoading ? (
-          <div
-            className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="flex-shrink-0 w-72">
-                <Skeleton className="aspect-square w-72 bg-stone" />
-                <Skeleton className="h-3 w-16 mt-4 bg-stone" />
-                <Skeleton className="h-5 w-48 mt-2 bg-stone" />
-                <Skeleton className="h-4 w-24 mt-2 bg-stone" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            {displayMostLoved.map((product, i) => (
-              <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
-                <ProductCard
-                  product={product}
-                  index={i}
-                  ocid={mostLovedOcids[i]}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        <div
+          className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          {displayMostLoved.map((product, i) => (
+            <div key={product.id} className="flex-shrink-0 w-64 md:w-72">
+              <ProductCard
+                product={product}
+                index={i}
+                ocid={mostLovedOcids[i]}
+              />
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── Western Edition Transformation ───────────────────── */}
@@ -358,8 +332,8 @@ export function HomePage() {
           </h2>
         </div>
         <BeforeAfterSlider
-          beforeSrc="/assets/uploads/Picsart_26-03-08_03-23-38-894-1.jpg"
-          afterSrc="/assets/uploads/Picsart_26-03-08_03-23-56-221-2.jpg"
+          beforeSrc={beforeImg}
+          afterSrc={afterImg}
           beforeLabel="Before"
           afterLabel="After"
         />

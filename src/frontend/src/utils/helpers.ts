@@ -6,6 +6,17 @@ import {
   Upholstery,
 } from "../backend.d";
 
+import imgBed1 from "../../public/assets/generated/product-bed-1.dim_800x800.jpg";
+import imgBed2 from "../../public/assets/generated/product-bed-2.dim_800x800.jpg";
+import imgDecor1 from "../../public/assets/generated/product-decor-1.dim_800x800.jpg";
+import imgDining1 from "../../public/assets/generated/product-dining-1.dim_800x800.jpg";
+import imgDining2 from "../../public/assets/generated/product-dining-2.dim_800x800.jpg";
+import imgMedia1 from "../../public/assets/generated/product-media-1.dim_800x800.jpg";
+import imgMedia2 from "../../public/assets/generated/product-media-2.dim_800x800.jpg";
+// Static image imports so the build pipeline bundles them
+import imgSofa1 from "../../public/assets/generated/product-sofa-1.dim_800x800.jpg";
+import imgSofa2 from "../../public/assets/generated/product-sofa-2.dim_800x800.jpg";
+
 export function formatINR(price: bigint): string {
   const num = Number(price);
   // Indian number formatting: xx,xx,xxx
@@ -88,23 +99,15 @@ export function getProductImage(
   if (product.imageUrl) return product.imageUrl;
   switch (product.category) {
     case Category.sofa:
-      return index % 2 === 0
-        ? "/assets/generated/product-sofa-1.dim_800x800.jpg"
-        : "/assets/generated/product-sofa-2.dim_800x800.jpg";
+      return index % 2 === 0 ? imgSofa1 : imgSofa2;
     case Category.diningTable:
-      return index % 2 === 0
-        ? "/assets/generated/product-dining-1.dim_800x800.jpg"
-        : "/assets/generated/product-dining-2.dim_800x800.jpg";
+      return index % 2 === 0 ? imgDining1 : imgDining2;
     case Category.bed:
-      return index % 2 === 0
-        ? "/assets/generated/product-bed-1.dim_800x800.jpg"
-        : "/assets/generated/product-bed-2.dim_800x800.jpg";
+      return index % 2 === 0 ? imgBed1 : imgBed2;
     case Category.mediaUnit:
-      return index % 2 === 0
-        ? "/assets/generated/product-media-1.dim_800x800.jpg"
-        : "/assets/generated/product-media-2.dim_800x800.jpg";
+      return index % 2 === 0 ? imgMedia1 : imgMedia2;
     default:
-      return "/assets/generated/product-decor-1.dim_800x800.jpg";
+      return imgDecor1;
   }
 }
 

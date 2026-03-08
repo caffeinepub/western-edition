@@ -25,7 +25,7 @@ function getDeletedIds(): string[] {
 
 export function useGetProducts() {
   const { actor, isFetching } = useActor();
-  return useQuery<Product[]>({
+  const query = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: async () => {
       const deletedIds = getDeletedIds();
@@ -44,7 +44,10 @@ export function useGetProducts() {
       return merged;
     },
     enabled: !!actor && !isFetching,
+    staleTime: 30_000,
+    retry: 2,
   });
+  return { ...query, isActorLoading: isFetching };
 }
 
 export function useGetNewArrivals() {
@@ -56,6 +59,8 @@ export function useGetNewArrivals() {
       return actor.getNewArrivals();
     },
     enabled: !!actor && !isFetching,
+    staleTime: 30_000,
+    retry: 2,
   });
 }
 
@@ -80,6 +85,8 @@ export function useGetMostLoved(limit: number) {
       return actor.getMostLoved(BigInt(limit));
     },
     enabled: !!actor && !isFetching,
+    staleTime: 30_000,
+    retry: 2,
   });
 }
 

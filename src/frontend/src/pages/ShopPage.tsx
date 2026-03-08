@@ -3,13 +3,116 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Material, Room } from "../backend.d";
+import {
+  Category,
+  Material,
+  type Product,
+  Room,
+  Upholstery,
+} from "../backend.d";
 import { ProductCard } from "../components/ProductCard";
 import { useGetProducts } from "../hooks/useQueries";
 import { getMaterialLabel, getRoomLabel } from "../utils/helpers";
 
+// Fallback catalog shown while backend is loading
+const FALLBACK_PRODUCTS: Product[] = [
+  {
+    id: "sofa-1",
+    name: "Ravi Low Profile Sofa",
+    category: Category.sofa,
+    room: Room.living,
+    priceInr: BigInt(285000),
+    description: "A sculptural three-seater with natural teak legs.",
+    availableMaterials: [Material.naturalTeak],
+    availableUpholstery: [Upholstery.performanceBoucle],
+    isNewArrival: true,
+  },
+  {
+    id: "sofa-2",
+    name: "Shirin Corner Sofa",
+    category: Category.sofa,
+    room: Room.living,
+    priceInr: BigInt(385000),
+    description: "L-shaped corner sofa in performance bouclé.",
+    availableMaterials: [Material.matteWalnut],
+    availableUpholstery: [Upholstery.performanceBoucle],
+    isNewArrival: false,
+  },
+  {
+    id: "dining-1",
+    name: "Teak Slab Dining Table",
+    category: Category.diningTable,
+    room: Room.dining,
+    priceInr: BigInt(420000),
+    description: "Solid natural teak slab with matte black legs.",
+    availableMaterials: [Material.naturalTeak],
+    availableUpholstery: [],
+    isNewArrival: true,
+  },
+  {
+    id: "dining-2",
+    name: "Naksha Dining Set",
+    category: Category.diningTable,
+    room: Room.dining,
+    priceInr: BigInt(520000),
+    description: "Six-seater dining set in charcoal ash.",
+    availableMaterials: [Material.charcoalAsh],
+    availableUpholstery: [],
+    isNewArrival: false,
+  },
+  {
+    id: "bed-1",
+    name: "Ananta Platform Bed",
+    category: Category.bed,
+    room: Room.bedroom,
+    priceInr: BigInt(195000),
+    description: "Low platform bed in charcoal ash wood.",
+    availableMaterials: [Material.charcoalAsh],
+    availableUpholstery: [Upholstery.italianVelvet],
+    isNewArrival: true,
+  },
+  {
+    id: "bed-2",
+    name: "Vayu Floating Bed",
+    category: Category.bed,
+    room: Room.bedroom,
+    priceInr: BigInt(245000),
+    description: "Minimalist floating bed in matte walnut.",
+    availableMaterials: [Material.matteWalnut],
+    availableUpholstery: [Upholstery.performanceBoucle],
+    isNewArrival: false,
+  },
+  {
+    id: "media-1",
+    name: "Arjuna Media Console",
+    category: Category.mediaUnit,
+    room: Room.living,
+    priceInr: BigInt(138000),
+    description: "Wall-mounted media unit in matte walnut.",
+    availableMaterials: [Material.matteWalnut],
+    availableUpholstery: [],
+    isNewArrival: true,
+  },
+  {
+    id: "media-2",
+    name: "Veda TV Unit",
+    category: Category.mediaUnit,
+    room: Room.living,
+    priceInr: BigInt(165000),
+    description: "Floor-standing TV unit in natural teak.",
+    availableMaterials: [Material.naturalTeak],
+    availableUpholstery: [],
+    isNewArrival: false,
+  },
+];
+
 export function ShopPage() {
-  const { data: products, isLoading, isError } = useGetProducts();
+  const {
+    data: products,
+    isLoading,
+    isActorLoading,
+    isError,
+  } = useGetProducts();
 
   // Read room from URL search params
   const search = useSearch({ strict: false }) as { room?: string };
@@ -57,16 +160,23 @@ export function ShopPage() {
     navigate({ to: "/shop", search: {} });
   };
 
+  // Use backend products if available, otherwise show fallback catalog
+  const allProducts =
+    products && products.length > 0
+      ? products
+      : !isLoading && !isActorLoading
+        ? FALLBACK_PRODUCTS
+        : (products ?? []);
+
   const filteredProducts = useMemo(() => {
-    if (!products) return [];
-    return products.filter((p) => {
+    return allProducts.filter((p) => {
       const roomMatch = selectedRooms.size === 0 || selectedRooms.has(p.room);
       const materialMatch =
         selectedMaterials.size === 0 ||
         p.availableMaterials.some((m) => selectedMaterials.has(m));
       return roomMatch && materialMatch;
     });
-  }, [products, selectedRooms, selectedMaterials]);
+  }, [allProducts, selectedRooms, selectedMaterials]);
 
   const rooms = [
     {
@@ -196,7 +306,7 @@ export function ShopPage() {
           {/* ── Product Grid ──────────────────────────────── */}
           <div className="flex-1 min-w-0">
             {/* Loading */}
-            {isLoading && (
+            {(isLoading || isActorLoading) && (
               <div
                 data-ocid="shop.loading_state"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"

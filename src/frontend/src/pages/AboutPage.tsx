@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import aboutImg from "../../public/assets/generated/about-craftsmanship.dim_1200x800.jpg";
 
 export function AboutPage() {
   const stats = [
@@ -15,7 +16,7 @@ export function AboutPage() {
         style={{ height: "60vh", minHeight: "400px" }}
       >
         <img
-          src="/assets/generated/about-craftsmanship.dim_1200x800.jpg"
+          src={aboutImg}
           alt="Indian artisan crafting furniture"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
