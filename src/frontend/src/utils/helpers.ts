@@ -42,35 +42,50 @@ export function getUpholsteryLabel(u: Upholstery): string {
   }
 }
 
-export function getCategoryLabel(c: Category): string {
+export function getCategoryLabel(c: Category | string): string {
   switch (c) {
     case Category.sofa:
+    case "sofa":
       return "Sofa";
     case Category.diningTable:
+    case "diningTable":
       return "Dining Table";
     case Category.bed:
+    case "bed":
       return "Bed";
     case Category.mediaUnit:
+    case "mediaUnit":
       return "Media Unit";
+    case "decor":
+      return "Decor";
     default:
-      return c;
+      return String(c);
   }
 }
 
-export function getRoomLabel(r: Room): string {
+export function getRoomLabel(r: Room | string): string {
   switch (r) {
     case Room.living:
+    case "living":
       return "Living Room";
     case Room.dining:
+    case "dining":
       return "Dining Room";
     case Room.bedroom:
+    case "bedroom":
       return "Bedroom";
+    case "decor":
+      return "Decor";
     default:
-      return r;
+      return String(r);
   }
 }
 
-export function getProductImage(product: Product, index = 0): string {
+export function getProductImage(
+  product: Product & { imageUrl?: string },
+  index = 0,
+): string {
+  if (product.imageUrl) return product.imageUrl;
   switch (product.category) {
     case Category.sofa:
       return index % 2 === 0
@@ -89,7 +104,7 @@ export function getProductImage(product: Product, index = 0): string {
         ? "/assets/generated/product-media-1.dim_800x800.jpg"
         : "/assets/generated/product-media-2.dim_800x800.jpg";
     default:
-      return "/assets/generated/product-sofa-1.dim_800x800.jpg";
+      return "/assets/generated/product-decor-1.dim_800x800.jpg";
   }
 }
 

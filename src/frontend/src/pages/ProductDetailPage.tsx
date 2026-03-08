@@ -1,11 +1,14 @@
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link, useParams } from "@tanstack/react-router";
-import { CheckCircle2, ChevronRight, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronRight, Heart, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import type { Material, Upholstery } from "../backend.d";
 import { ShowroomModal } from "../components/ShowroomModal";
 import { useGetProductById, useRecordView } from "../hooks/useQueries";
+import { useCart } from "../store/cartStore";
+import { useWishlist } from "../store/wishlistStore";
 import {
   formatINR,
   getCategoryLabel,
@@ -38,6 +41,37 @@ export function ProductDetailPage() {
     "idle" | "valid" | "invalid"
   >("idle");
   const [showroomOpen, setShowroomOpen] = useState(false);
+  const [cartError, setCartError] = useState("");
+
+  const { addItem } = useCart();
+  const { isWishlisted, toggle: toggleWishlist } = useWishlist();
+  const wishlisted = product ? isWishlisted(product.id) : false;
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    if (product.availableMaterials.length > 0 && !selectedMaterial) {
+      setCartError("Please select a material.");
+      return;
+    }
+    if (product.availableUpholstery.length > 0 && !selectedUpholstery) {
+      setCartError("Please select an upholstery.");
+      return;
+    }
+    setCartError("");
+    addItem({
+      productId: product.id,
+      productName: product.name,
+      material: selectedMaterial
+        ? getMaterialLabel(selectedMaterial)
+        : undefined,
+      upholstery: selectedUpholstery
+        ? getUpholsteryLabel(selectedUpholstery)
+        : undefined,
+      quantity: 1,
+      priceSnapshotInr: product.priceInr,
+    });
+    toast.success(`${product.name} added to cart.`);
+  };
 
   const handleCheckPincode = () => {
     if (isValidPincode(pincode)) {
@@ -293,12 +327,52 @@ export function ProductDetailPage() {
                 )}
               </div>
 
+              {/* Add to Cart */}
+              {cartError && (
+                <p
+                  data-ocid="product.cart.error_state"
+                  className="text-xs font-sans text-destructive"
+                >
+                  {cartError}
+                </p>
+              )}
+
+              <button
+                type="button"
+                data-ocid="product.add_to_cart.primary_button"
+                onClick={handleAddToCart}
+                className="w-full h-14 bg-foreground text-background text-xs tracking-[0.2em] uppercase font-sans hover:bg-foreground/80 transition-colors duration-200"
+              >
+                Add to Cart
+              </button>
+
+              {/* Wishlist toggle */}
+              <button
+                type="button"
+                data-ocid="product.wishlist.toggle"
+                onClick={() => product && toggleWishlist(product.id)}
+                className="w-full h-12 flex items-center justify-center gap-3 border text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-200"
+                style={{
+                  borderColor: wishlisted
+                    ? "oklch(0.52 0.18 22)"
+                    : "oklch(0.82 0 0)",
+                  color: wishlisted ? "oklch(0.45 0.18 22)" : "oklch(0.42 0 0)",
+                }}
+              >
+                <Heart
+                  size={14}
+                  strokeWidth={1.5}
+                  fill={wishlisted ? "currentColor" : "none"}
+                />
+                {wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+              </button>
+
               {/* Book a Showroom Visit */}
               <button
                 type="button"
                 data-ocid="product.book_showroom.open_modal_button"
                 onClick={() => setShowroomOpen(true)}
-                className="w-full h-14 bg-foreground text-background text-xs tracking-[0.2em] uppercase font-sans hover:bg-foreground/80 transition-colors duration-200"
+                className="w-full h-12 border border-foreground text-foreground text-xs tracking-[0.2em] uppercase font-sans hover:bg-foreground hover:text-background transition-colors duration-200"
               >
                 Book a Showroom Visit
               </button>

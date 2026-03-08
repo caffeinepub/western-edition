@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
+import { Heart } from "lucide-react";
 import type { Product } from "../backend.d";
+import { useWishlist } from "../store/wishlistStore";
 import { formatINR, getCategoryLabel, getProductImage } from "../utils/helpers";
 
 interface ProductCardProps {
@@ -9,6 +11,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0, ocid }: ProductCardProps) {
+  const { isWishlisted, toggle } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
+
   return (
     <Link
       to="/product/$id"
@@ -21,6 +26,27 @@ export function ProductCard({ product, index = 0, ocid }: ProductCardProps) {
         className="relative overflow-hidden aspect-square"
         style={{ backgroundColor: "oklch(0.975 0.006 75)" }}
       >
+        {/* Wishlist heart */}
+        <button
+          type="button"
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggle(product.id);
+          }}
+          className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-white/80 hover:bg-white transition-all duration-200"
+          style={{ backdropFilter: "blur(4px)" }}
+        >
+          <Heart
+            size={14}
+            strokeWidth={1.5}
+            fill={wishlisted ? "currentColor" : "none"}
+            style={{
+              color: wishlisted ? "oklch(0.52 0.18 22)" : "oklch(0.45 0 0)",
+            }}
+          />
+        </button>
         <img
           src={getProductImage(product, index)}
           alt={product.name}

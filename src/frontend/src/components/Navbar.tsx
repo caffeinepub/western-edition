@@ -1,12 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, ShoppingBag, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useCart } from "../store/cartStore";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
+  const { itemCount } = useCart();
   const isHome = currentPath === "/";
 
   useEffect(() => {
@@ -99,7 +101,45 @@ export function Navbar() {
           </ul>
 
           {/* Right — icons */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Account icon */}
+            <Link
+              to="/account"
+              data-ocid="nav.account_link"
+              className="flex items-center justify-center w-10 h-10 transition-opacity duration-200 hover:opacity-50"
+              aria-label="My Account"
+              style={{
+                color: isTransparent
+                  ? "rgba(255,255,255,0.9)"
+                  : "oklch(0.12 0 0)",
+              }}
+            >
+              <User size={18} strokeWidth={1.5} />
+            </Link>
+
+            {/* Cart icon */}
+            <Link
+              to="/cart"
+              data-ocid="nav.cart_link"
+              className="relative flex items-center justify-center w-10 h-10 transition-opacity duration-200 hover:opacity-50"
+              aria-label={`Cart${itemCount > 0 ? ` (${itemCount} items)` : ""}`}
+              style={{
+                color: isTransparent
+                  ? "rgba(255,255,255,0.9)"
+                  : "oklch(0.12 0 0)",
+              }}
+            >
+              <ShoppingBag size={18} strokeWidth={1.5} />
+              {itemCount > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[9px] font-sans font-bold text-white rounded-full"
+                  style={{ backgroundColor: "oklch(0.12 0 0)" }}
+                >
+                  {itemCount > 9 ? "9+" : itemCount}
+                </span>
+              )}
+            </Link>
+
             {/* Mobile hamburger — always pinned to the right edge */}
             <button
               type="button"
